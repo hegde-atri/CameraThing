@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraThing", "CameraThing\CameraThing.csproj", "{960E8CDB-0D66-4A5F-989B-255D0AC02231}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraThing", "CameraThing\CameraThing.csproj", "{2389C6E0-FD7A-4BEB-82C7-6B87D0C06549}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{960E8CDB-0D66-4A5F-989B-255D0AC02231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{960E8CDB-0D66-4A5F-989B-255D0AC02231}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{960E8CDB-0D66-4A5F-989B-255D0AC02231}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{960E8CDB-0D66-4A5F-989B-255D0AC02231}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2389C6E0-FD7A-4BEB-82C7-6B87D0C06549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2389C6E0-FD7A-4BEB-82C7-6B87D0C06549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2389C6E0-FD7A-4BEB-82C7-6B87D0C06549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2389C6E0-FD7A-4BEB-82C7-6B87D0C06549}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
