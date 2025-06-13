@@ -41,7 +41,7 @@ try {
     Write-Output "Restoring:"
     dotnet restore -r win-x64
     Write-Output "Publishing:"
-    dotnet publish -c Release -r win-x64 --self-contained true `
+    dotnet publish -c Release -r win-x64 --self-contained false `
         -p:PublishProfile=ClickOnceProfile `
         -p:ApplicationVersion=$version `
         -p:PublishDir=$publishDir `
