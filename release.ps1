@@ -1,12 +1,12 @@
-# From https://janjones.me/posts/clickonce-installer-build-publish-github/.
+# Copied from https://janjones.me/posts/clickonce-installer-build-publish-github/.
 
-[CmdletBinding(PositionalBinding=$false)]
+[CmdletBinding(PositionalBinding = $false)]
 param (
-    [switch]$OnlyBuild=$false
+    [switch]$OnlyBuild = $false
 )
 
-$appName = "CameraThing"
-$projDir = "CameraThing"
+$appName = "InOculus"
+$projDir = "InOculus"
 
 Set-StrictMode -version 2.0
 $ErrorActionPreference = "Stop"
@@ -41,34 +41,19 @@ try {
     Write-Output "Restoring:"
     dotnet restore -r win-x64
     Write-Output "Publishing:"
-    dotnet publish -c Release -r win-x64 --self-contained false `
-        -p:PublishProfile=ClickOnceProfile `
-        -p:ApplicationVersion=$version `
-        -p:PublishDir=$publishDir `
-        -p:PublishUrl=$publishDir `
-        --verbosity minimal
+    $msBuildVerbosityArg = "/v:m"
+    if ($env:CI) {
+        $msBuildVerbosityArg = ""
+    }
+    & $msBuildPath /target:publish /p:PublishProfile=ClickOnceProfile `
+        /p:ApplicationVersion=$version /p:Configuration=Release `
+        /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
+        $msBuildVerbosityArg
 
     # Measure publish size.
-    if (Test-Path "$publishDir/Application Files") {
-        $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
-            Measure-Object -Property Length -Sum).Sum / 1Mb
-        Write-Output ("Published size: {0:N2} MB" -f $publishSize)
-    } else {
-        Write-Output "Warning: Application Files directory not found after publish"
-    }
-    # $msBuildVerbosityArg = "/v:m"
-    # if ($env:CI) {
-    #     $msBuildVerbosityArg = ""
-    # }
-    # & $msBuildPath /target:publish /p:PublishProfile=ClickOnceProfile `
-    #     /p:ApplicationVersion=$version /p:Configuration=Release `
-    #     /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
-    #     $msBuildVerbosityArg
-
-    # # Measure publish size.
-    # $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
-    #     Measure-Object -Property Length -Sum).Sum / 1Mb
-    # Write-Output ("Published size: {0:N2} MB" -f $publishSize)
+    $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
+        Measure-Object -Property Length -Sum).Sum / 1Mb
+    Write-Output ("Published size: {0:N2} MB" -f $publishSize)
 }
 finally {
     Pop-Location
@@ -97,24 +82,9 @@ try {
         Remove-Item -Path "$appName.application"
     }
 
-    $appFilesPath = "../$outDir/Application Files"
-    $applicationPath = "../$outDir/$appName.application"
-
-    if (Test-Path $appFilesPath) {
-        Write-Output "  Found: Application Files directory"
-    } else {
-        Write-Output "  Missing: Application Files directory at $appFilesPath"
-    }
-
-    if (Test-Path $applicationPath) {
-        Write-Output "  Found: $appName.application file"
-    } else {
-        Write-Output "  Missing: $appName.application file at $applicationPath"
-    }
-
     # Copy new application files.
     Write-Output "Copying new files..."
-    Copy-Item -Path "../$outDir/Application Files","../$outDir/$appName.application" `
+    Copy-Item -Path "../$outDir/Application Files", "../$outDir/$appName.application" `
         -Destination . -Recurse
 
     # Stage and commit.
@@ -125,6 +95,7 @@ try {
 
     # Push.
     git push
-} finally {
+}
+finally {
     Pop-Location
 }

@@ -16,11 +16,6 @@ jobs:
         with:
           fetch-depth: 0  # Fetch all history for all branches and tags
       
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          global-json-file: global.json
-
       - name: Setup Git
         run: |
           git config --global url."https://user:${{ secrets.GITHUB_TOKEN }}@github".insteadOf https://github
