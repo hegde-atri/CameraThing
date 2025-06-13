@@ -97,6 +97,18 @@ try {
         Remove-Item -Path "$appName.application"
     }
 
+    if (Test-Path $appFilesPath) {
+        Write-Output "  Found: Application Files directory"
+    } else {
+        Write-Output "  Missing: Application Files directory at $appFilesPath"
+    }
+
+    if (Test-Path $applicationPath) {
+        Write-Output "  Found: $appName.application file"
+    } else {
+        Write-Output "  Missing: $appName.application file at $applicationPath"
+    }
+
     # Copy new application files.
     Write-Output "Copying new files..."
     Copy-Item -Path "../$outDir/Application Files","../$outDir/$appName.application" `
