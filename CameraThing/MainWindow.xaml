@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CameraThing"
         xmlns:controls="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
         xmlns:players="clr-namespace:WPFMediaKit.DirectShow.MediaPlayers;assembly=WPFMediaKit"
-        mc:Ignorable="d"        
+        mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -14,83 +14,79 @@
         MouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
         Loaded="Window_Loaded"
-        Title="MainWindow" Height="450" Width="450" MinHeight="200" MinWidth="200"><Window.Resources>
+        Title="MainWindow" Height="450" Width="450" MinHeight="200" MinWidth="200">    <Window.Resources>
         <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-        <Storyboard x:Key="ShowToolbar">
-            <DoubleAnimation Storyboard.TargetName="ToolbarPanel" 
-                           Storyboard.TargetProperty="Opacity" 
-                           To="1" Duration="0:0:0.2"/>
+        <Storyboard x:Key="ShowButton">
+            <DoubleAnimation Storyboard.TargetName="SettingsButton"
+                             Storyboard.TargetProperty="Opacity"
+                             To="1" Duration="0:0:0.2" />
         </Storyboard>
-        <Storyboard x:Key="HideToolbar">
-            <DoubleAnimation Storyboard.TargetName="ToolbarPanel" 
-                           Storyboard.TargetProperty="Opacity" 
-                           To="0" Duration="0:0:0.2"/>
+        <Storyboard x:Key="HideButton">
+            <DoubleAnimation Storyboard.TargetName="SettingsButton"
+                             Storyboard.TargetProperty="Opacity"
+                             To="0" Duration="0:0:0.2" />
         </Storyboard>
     </Window.Resources>    <Grid x:Name="MainGrid">
         <Grid.Clip>
-            <EllipseGeometry x:Name="WindowClip" Center="225,225" RadiusX="225" RadiusY="225"/>
+            <EllipseGeometry x:Name="WindowClip" Center="225,225" RadiusX="225" RadiusY="225" />
         </Grid.Clip>
         <Grid.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
-                <BeginStoryboard Storyboard="{StaticResource ShowToolbar}"/>
+                <BeginStoryboard Storyboard="{StaticResource ShowButton}" />
             </EventTrigger>
             <EventTrigger RoutedEvent="MouseLeave">
-                <BeginStoryboard Storyboard="{StaticResource HideToolbar}"/>
+                <BeginStoryboard Storyboard="{StaticResource HideButton}" />
             </EventTrigger>
         </Grid.Triggers>
 
         <!-- Black background circle when no camera is active -->
         <Ellipse x:Name="BackgroundEllipse" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        
+
         <!-- Error text display -->
-        <TextBlock x:Name="errorText" TextWrapping="Wrap" Foreground="White" 
-                   Margin="4" VerticalAlignment="Center" HorizontalAlignment="Center" />        <!-- Video content with circular clipping and proper scaling to fill circle -->
-        <Grid>
+        <TextBlock x:Name="errorText" TextWrapping="Wrap" Foreground="White"
+                   Margin="4" VerticalAlignment="Center" HorizontalAlignment="Center" />        <Grid>
             <Grid.Clip>
-                <EllipseGeometry x:Name="MediaClip" Center="225,225" RadiusX="225" RadiusY="225"/>
+                <EllipseGeometry x:Name="CameraClip" Center="225,225" RadiusX="225" RadiusY="225" />
             </Grid.Clip>
-            <controls:MediaUriElement x:Name="mediaUriElement"
-                                      DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
-                                      Stretch="UniformToFill"
-                                      HorizontalAlignment="Stretch" 
-                                      VerticalAlignment="Stretch"/>
-        </Grid>
-        
-        <Grid>
-            <Grid.Clip>
-                <EllipseGeometry x:Name="CameraClip" Center="225,225" RadiusX="225" RadiusY="225"/>
-            </Grid.Clip>
-            <controls:VideoCaptureElement x:Name="cameraCaptureElement" 
+            <controls:VideoCaptureElement x:Name="cameraCaptureElement"
                                           EnableSampleGrabbing="False"
                                           DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
                                           Stretch="UniformToFill"
-                                          HorizontalAlignment="Stretch" 
-                                          VerticalAlignment="Stretch"/>
-        </Grid><!-- Floating toolbar positioned above the circle -->
-        <Border x:Name="ToolbarPanel" 
-                VerticalAlignment="Top"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch" />
+        </Grid>
+
+        <!-- 3-dot settings button at the bottom -->
+        <Button x:Name="SettingsButton"
+                Content="⋯"
+                Width="30"
+                Height="30"
+                FontSize="16"
+                FontWeight="Bold"
+                Background="#CC000000"
+                Foreground="White"
+                BorderBrush="Transparent"
+                VerticalAlignment="Bottom"
                 HorizontalAlignment="Center"
-                Margin="0,20,0,0"
-                Background="#CC000000" 
-                CornerRadius="20"
-                Opacity="0">
-            <StackPanel Orientation="Horizontal" Margin="10,5">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                    <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="10"/>
-                    <ComboBox x:Name="cobVideoSource" Width="80" SelectionChanged="cobVideoSource_SelectionChanged" 
-                              VerticalAlignment="Center" FontSize="10"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                    <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
-                                 VerticalAlignment="Center" />
-                    <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
-                                 VerticalAlignment="Center" />
-                    <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                    <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" />
-                </StackPanel>
-            </StackPanel>
-        </Border>
+                Margin="0,0,0,20"
+                Opacity="0"
+                Click="SettingsButton_Click">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="15"
+                                        BorderThickness="0">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Window>

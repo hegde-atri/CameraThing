@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="WPFMediaKit" Version="3.0.1" />
+        <PackageReference Include="WPFMediaKit" Version="3.0.1"/>
     </ItemGroup>
 
 </Project>

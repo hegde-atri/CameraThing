@@ -1,80 +1,105 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using WPFMediaKit.DirectShow.Controls;
 
 namespace CameraThing;
 
 public partial class MainWindow : Window
 {
-    private bool isResizing = false;
-
-    public MainWindow()
+    private bool isResizing;
+    private ToolbarWindow _toolbarWindow;
+    private bool _isToolbarVisible = false;    public MainWindow()
     {
         InitializeComponent();
 
+        // Initialize toolbar window
+        _toolbarWindow = new ToolbarWindow(this);
+
         if (MultimediaUtil.VideoInputDevices.Length > 0)
         {
-            cobVideoSource.ItemsSource = MultimediaUtil.VideoInputNames;
+            // Set initial camera device
+            cameraCaptureElement.VideoCaptureDevice = MultimediaUtil.VideoInputDevices[0];
         }
-        // Camera element is always visible now - black background shows when no source
         
-        cameraCaptureElement.VideoCaptureDevice = MultimediaUtil.VideoInputDevices[0];
         // Set initial size to be square
         UpdateWindowClip();
+    }    private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // This method is no longer needed as it's handled in ToolbarWindow
+    }    public void SetCameraDevice(DirectShowLib.DsDevice? device)
+    {
+        cameraCaptureElement.VideoCaptureDevice = device;
     }
 
-    private void cobVideoSource_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    public bool GetDeeperColorValue()
     {
-        if (cobVideoSource.SelectedIndex < 0)
-        {
-            // Stop any current camera capture
-            cameraCaptureElement.VideoCaptureDevice = null;
-            return;
-        }
-        
-        // Set the selected camera device
-        cameraCaptureElement.VideoCaptureDevice = MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex];
+        // Return the deeper color value - you may need to adjust this based on your implementation
+        return false; // placeholder
+    }
+
+    public void SetDeeperColorValue(bool value)
+    {
+        // Set the deeper color value - you may need to adjust this based on your implementation
+        // This should update the cameraCaptureElement.DeeperColor property
     }    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
             DragMove();
     }
-      private void Window_Loaded(object sender, RoutedEventArgs e)
+
+    private void SettingsButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isToolbarVisible)
+        {
+            _toolbarWindow.Hide();
+            _isToolbarVisible = false;
+        }
+        else
+        {
+            // Position toolbar above the main window
+            var mainWindowRect = new Rect(Left, Top, Width, Height);
+            _toolbarWindow.Left = mainWindowRect.Left + (mainWindowRect.Width - _toolbarWindow.Width) / 2;
+            _toolbarWindow.Top = mainWindowRect.Top - _toolbarWindow.Height - 10;
+            
+            _toolbarWindow.Show();
+            _isToolbarVisible = true;
+        }
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         // Initialize window clip after loading
         UpdateWindowClip();
     }
-      private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+
+    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         if (isResizing) return;
-        
+
         isResizing = true;
-        
+
         // Force square aspect ratio
-        double size = Math.Min(this.Width, this.Height);
-        this.Width = size;
-        this.Height = size;
-        
+        var size = Math.Min(Width, Height);
+        Width = size;
+        Height = size;
+
         UpdateWindowClip();
-        
+
         isResizing = false;
-    }    private void UpdateWindowClip()
+    }
+
+    private void UpdateWindowClip()
     {
-        double radius = Math.Min(this.Width, this.Height) / 2;
-        double center = radius;
-        
+        var radius = Math.Min(Width, Height) / 2;
+        var center = radius;
+
         // Update window clip
         WindowClip.Center = new Point(center, center);
         WindowClip.RadiusX = radius;
         WindowClip.RadiusY = radius;
-        
+
         // Update video element clips to match the window size
-        MediaClip.Center = new Point(center, center);
-        MediaClip.RadiusX = radius;
-        MediaClip.RadiusY = radius;
-        
         CameraClip.Center = new Point(center, center);
         CameraClip.RadiusX = radius;
         CameraClip.RadiusY = radius;

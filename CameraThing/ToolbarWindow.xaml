@@ -1,0 +1,41 @@
+<Window x:Class="CameraThing.ToolbarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CameraThing"
+        xmlns:players="clr-namespace:WPFMediaKit.DirectShow.MediaPlayers;assembly=WPFMediaKit"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        SizeToContent="WidthAndHeight"
+        Title="ToolbarWindow">
+    <Window.Resources>
+        <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+    </Window.Resources>
+    <Border Background="#CC000000"
+            CornerRadius="10"
+            Margin="10">
+        <StackPanel Orientation="Horizontal" Margin="15,10">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="11" />
+                <ComboBox x:Name="cobVideoSource" Width="100" SelectionChanged="cobVideoSource_SelectionChanged"
+                          VerticalAlignment="Center" FontSize="11" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="2" />
+                <RadioButton Content=""
+                             IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
+                             VerticalAlignment="Center" />
+                <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="2" />
+                <RadioButton Content=""
+                             IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
+                             VerticalAlignment="Center" />                <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="2" />
+                <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" Checked="chkDeeperColor_CheckedChanged" Unchecked="chkDeeperColor_CheckedChanged" />
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>
