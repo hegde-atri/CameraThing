@@ -10,7 +10,7 @@
         Topmost="True"
         ShowInTaskbar="False"
         SizeToContent="WidthAndHeight"
-        Title="ToolbarWindow">
+        Title="Toolbar - CameraThing">
     <Window.Resources>
         <!-- Modern Dark ComboBox Style -->
         <Style x:Key="ModernDarkComboBox" TargetType="ComboBox">

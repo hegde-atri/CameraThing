@@ -12,7 +12,7 @@
         MouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
         Loaded="Window_Loaded"
-        Title="MainWindow" Height="450" Width="450" MinHeight="200" MinWidth="200">
+        Title="CameraThing" Height="450" Width="450" MinHeight="200" MinWidth="200">
     <Window.Resources>
         <Storyboard x:Key="ShowButton">
             <DoubleAnimation Storyboard.TargetName="SettingsButton"
