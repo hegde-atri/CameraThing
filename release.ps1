@@ -5,20 +5,22 @@ param (
     [switch]$OnlyBuild=$false
 )
 
-$appName = "CameraThing" # 👈 Replace with your application project name.
-$projDir = "CameraThing" # 👈 Replace with your project directory (where .csproj resides).
+$appName = "CameraThing"
+$projDir = "CameraThing"
 
 Set-StrictMode -version 2.0
 $ErrorActionPreference = "Stop"
 
 Write-Output "Working directory: $pwd"
 
+# Find MSBuild.
+$msBuildPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
+    -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe `
+    -prerelease | select-object -first 1
+Write-Output "MSBuild: $((Get-Command $msBuildPath).Path)"
+
 # Load current Git tag.
-$tag = $(git describe --tags 2>$null)
-if (-not $tag) {
-    Write-Output "No tags found, using default version"
-    $tag = "v0.0.1"
-}
+$tag = $(git describe --tags)
 Write-Output "Tag: $tag"
 
 # Parse tag into a three-number version.
@@ -39,22 +41,19 @@ try {
     Write-Output "Restoring:"
     dotnet restore -r win-x64
     Write-Output "Publishing:"
-    
-    # Use dotnet publish instead of MSBuild for better .NET compatibility
-    dotnet publish -c Release -r win-x64 --self-contained false `
-        -p:PublishProfile=ClickOnceProfile `
-        -p:ApplicationVersion=$version `
-        -p:PublishDir=$publishDir `
-        -p:PublishUrl=$publishDir
-
-    # Measure publish size (with error handling).
-    if (Test-Path "$publishDir/Application Files") {
-        $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
-            Measure-Object -Property Length -Sum).Sum / 1Mb
-        Write-Output ("Published size: {0:N2} MB" -f $publishSize)
-    } else {
-        Write-Output "Warning: Application Files directory not found"
+    $msBuildVerbosityArg = "/v:m"
+    if ($env:CI) {
+        $msBuildVerbosityArg = ""
     }
+    & $msBuildPath /target:publish /p:PublishProfile=ClickOnceProfile `
+        /p:ApplicationVersion=$version /p:Configuration=Release `
+        /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
+        $msBuildVerbosityArg
+
+    # Measure publish size.
+    $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
+        Measure-Object -Property Length -Sum).Sum / 1Mb
+    Write-Output ("Published size: {0:N2} MB" -f $publishSize)
 }
 finally {
     Pop-Location

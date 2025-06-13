@@ -42,7 +42,7 @@
         <Ellipse x:Name="BackgroundEllipse" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
         <!-- Error text display -->
-        <TextBlock x:Name="errorText" TextWrapping="Wrap" Foreground="White"
+        <TextBlock x:Name="ErrorText" TextWrapping="Wrap" Foreground="White"
                    Margin="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
         <Grid>
             <Grid.Clip>

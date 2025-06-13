@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'  # Specify the .NET version you want to use
 
       - name: Setup Git
         run: |
