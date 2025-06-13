@@ -41,19 +41,34 @@ try {
     Write-Output "Restoring:"
     dotnet restore -r win-x64
     Write-Output "Publishing:"
-    $msBuildVerbosityArg = "/v:m"
-    if ($env:CI) {
-        $msBuildVerbosityArg = ""
-    }
-    & $msBuildPath /target:publish /p:PublishProfile=ClickOnceProfile `
-        /p:ApplicationVersion=$version /p:Configuration=Release `
-        /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
-        $msBuildVerbosityArg
+    dotnet publish -c Release -r win-x64 --self-contained true `
+        -p:PublishProfile=ClickOnceProfile `
+        -p:ApplicationVersion=$version `
+        -p:PublishDir=$publishDir `
+        -p:PublishUrl=$publishDir `
+        --verbosity minimal
 
     # Measure publish size.
-    $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
-        Measure-Object -Property Length -Sum).Sum / 1Mb
-    Write-Output ("Published size: {0:N2} MB" -f $publishSize)
+    if (Test-Path "$publishDir/Application Files") {
+        $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
+            Measure-Object -Property Length -Sum).Sum / 1Mb
+        Write-Output ("Published size: {0:N2} MB" -f $publishSize)
+    } else {
+        Write-Output "Warning: Application Files directory not found after publish"
+    }
+    # $msBuildVerbosityArg = "/v:m"
+    # if ($env:CI) {
+    #     $msBuildVerbosityArg = ""
+    # }
+    # & $msBuildPath /target:publish /p:PublishProfile=ClickOnceProfile `
+    #     /p:ApplicationVersion=$version /p:Configuration=Release `
+    #     /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
+    #     $msBuildVerbosityArg
+
+    # # Measure publish size.
+    # $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
+    #     Measure-Object -Property Length -Sum).Sum / 1Mb
+    # Write-Output ("Published size: {0:N2} MB" -f $publishSize)
 }
 finally {
     Pop-Location
