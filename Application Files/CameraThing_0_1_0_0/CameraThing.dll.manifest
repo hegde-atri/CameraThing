@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="CameraThing.exe" version="0.0.3.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="CameraThing.exe" version="0.1.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="CameraThing.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
     <assemblyIdentity name="Launcher" version="8.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -71,22 +72,31 @@
       <dsig:DigestValue>B5BM3G4H4UmS3ntOALOtevdFgM/j6JJ2ZpYSQwFNvII=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="CameraThing.dll" size="18944">
+  <file name="CameraThing.dll" size="224256">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>DgQCdAyOwbhryKJO0eqSMuQ6CoVivvYTOMGix9C8zWA=</dsig:DigestValue>
+      <dsig:DigestValue>jivYk6Sbmb4q+bSj8KFLOoHHxUmDNJVVomB/rkiYBuI=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="CameraThing.exe" size="157696">
+  <file name="CameraThing.exe" size="363008">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>AoNh3LEyc/VPWP5oHoG6znA5gLFIEBOp48cHIOKYcfA=</dsig:DigestValue>
+      <dsig:DigestValue>1A4kfCjxvRZ1Sgwh93Rwb4SzxDrcM8JiR7N6nI/46Sw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CameraThing.ico" size="205086">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cWlGCcKa8F/h6hlkg16OkvrPx8aqHr0MPvSL9OeF164=</dsig:DigestValue>
     </hash>
   </file>
   <file name="CameraThing.runtimeconfig.json" size="524">
