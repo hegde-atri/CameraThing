@@ -20,7 +20,11 @@ $msBuildPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vsw
 Write-Output "MSBuild: $((Get-Command $msBuildPath).Path)"
 
 # Load current Git tag.
-$tag = $(git describe --tags)
+$tag = $(git describe --tags 2>$null)
+if (-not $tag) {
+    Write-Output "No tags found, using default version"
+    $tag = "v1.0.0"
+}
 Write-Output "Tag: $tag"
 
 # Parse tag into a three-number version.
