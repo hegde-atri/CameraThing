@@ -41,14 +41,12 @@ public partial class MainWindow : Window
         if (e.ChangedButton == MouseButton.Left)
             DragMove();
     }
-    
-    private void Window_Loaded(object sender, RoutedEventArgs e)
+      private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        // Initialize toolbar position after window is loaded
-        UpdateToolbarPosition();
+        // Initialize window clip after loading
+        UpdateWindowClip();
     }
-    
-    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+      private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         if (isResizing) return;
         
@@ -60,12 +58,9 @@ public partial class MainWindow : Window
         this.Height = size;
         
         UpdateWindowClip();
-        UpdateToolbarPosition();
         
         isResizing = false;
-    }
-    
-    private void UpdateWindowClip()
+    }    private void UpdateWindowClip()
     {
         double radius = Math.Min(this.Width, this.Height) / 2;
         double center = radius;
@@ -75,38 +70,13 @@ public partial class MainWindow : Window
         WindowClip.RadiusX = radius;
         WindowClip.RadiusY = radius;
         
-        // Update video element clips
-        var mediaClip = mediaUriElement.Clip as EllipseGeometry;
-        if (mediaClip != null)
-        {
-            mediaClip.Center = new Point(center, center);
-            mediaClip.RadiusX = radius;
-            mediaClip.RadiusY = radius;
-        }
+        // Update video element clips to match the window size
+        MediaClip.Center = new Point(center, center);
+        MediaClip.RadiusX = radius;
+        MediaClip.RadiusY = radius;
         
-        var cameraClip = cameraCaptureElement.Clip as EllipseGeometry;
-        if (cameraClip != null)
-        {
-            cameraClip.Center = new Point(center, center);
-            cameraClip.RadiusX = radius;
-            cameraClip.RadiusY = radius;
-        }
-        
-        // Update video element sizes to match window
-        mediaUriElement.Width = this.Width;
-        mediaUriElement.Height = this.Height;
-        cameraCaptureElement.Width = this.Width;
-        cameraCaptureElement.Height = this.Height;
-    }
-    
-    private void UpdateToolbarPosition()
-    {
-        // Position toolbar above the circle
-        double windowWidth = this.Width;
-        double toolbarWidth = ToolbarPanel.ActualWidth;
-        
-        // Center the toolbar horizontally and position it above the circle
-        Canvas.SetLeft(ToolbarPanel, (windowWidth - toolbarWidth) / 2);
-        Canvas.SetTop(ToolbarPanel, -60); // 60 pixels above the window
+        CameraClip.Center = new Point(center, center);
+        CameraClip.RadiusX = radius;
+        CameraClip.RadiusY = radius;
     }
 }

@@ -6,10 +6,12 @@
         xmlns:local="clr-namespace:CameraThing"
         xmlns:controls="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
         xmlns:players="clr-namespace:WPFMediaKit.DirectShow.MediaPlayers;assembly=WPFMediaKit"
-        mc:Ignorable="d"
+        mc:Ignorable="d"        
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"        MouseDown="Window_MouseDown"
+        Background="Transparent"
+        Topmost="True"
+        MouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
         Loaded="Window_Loaded"
         Title="MainWindow" Height="450" Width="450" MinHeight="200" MinWidth="200"><Window.Resources>
@@ -42,56 +44,53 @@
         
         <!-- Error text display -->
         <TextBlock x:Name="errorText" TextWrapping="Wrap" Foreground="White" 
-                   Margin="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        
-        <!-- Video content with circular clipping and proper scaling -->
-        <Viewbox x:Name="MediaViewbox" Stretch="UniformToFill">
+                   Margin="4" VerticalAlignment="Center" HorizontalAlignment="Center" />        <!-- Video content with circular clipping and proper scaling to fill circle -->
+        <Grid>
+            <Grid.Clip>
+                <EllipseGeometry x:Name="MediaClip" Center="225,225" RadiusX="225" RadiusY="225"/>
+            </Grid.Clip>
             <controls:MediaUriElement x:Name="mediaUriElement"
                                       DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
-                                      Width="450" Height="450">
-                <controls:MediaUriElement.Clip>
-                    <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
-                </controls:MediaUriElement.Clip>
-            </controls:MediaUriElement>
-        </Viewbox>
+                                      Stretch="UniformToFill"
+                                      HorizontalAlignment="Stretch" 
+                                      VerticalAlignment="Stretch"/>
+        </Grid>
         
-        <Viewbox x:Name="CameraViewbox" Stretch="UniformToFill">
-            <controls:VideoCaptureElement x:Name="cameraCaptureElement" EnableSampleGrabbing="False"
+        <Grid>
+            <Grid.Clip>
+                <EllipseGeometry x:Name="CameraClip" Center="225,225" RadiusX="225" RadiusY="225"/>
+            </Grid.Clip>
+            <controls:VideoCaptureElement x:Name="cameraCaptureElement" 
+                                          EnableSampleGrabbing="False"
                                           DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
-                                          Width="450" Height="450">
-                <controls:VideoCaptureElement.Clip>
-                    <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
-                </controls:VideoCaptureElement.Clip>
-            </controls:VideoCaptureElement>
-        </Viewbox>
-
-        <!-- Floating toolbar positioned outside the circle -->
-        <Canvas>
-            <Border x:Name="ToolbarPanel" 
-                    Canvas.Left="0"
-                    Canvas.Top="-60"
-                    Background="#CC000000" 
-                    CornerRadius="20"
-                    Opacity="0"
-                    HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal" Margin="10,5">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                        <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="10"/>
-                        <ComboBox x:Name="cobVideoSource" Width="80" SelectionChanged="cobVideoSource_SelectionChanged" 
-                                  VerticalAlignment="Center" FontSize="10"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                        <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                        <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
-                                     VerticalAlignment="Center" />
-                        <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                        <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
-                                     VerticalAlignment="Center" />
-                        <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                        <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" />
-                    </StackPanel>
+                                          Stretch="UniformToFill"
+                                          HorizontalAlignment="Stretch" 
+                                          VerticalAlignment="Stretch"/>
+        </Grid><!-- Floating toolbar positioned above the circle -->
+        <Border x:Name="ToolbarPanel" 
+                VerticalAlignment="Top"
+                HorizontalAlignment="Center"
+                Margin="0,20,0,0"
+                Background="#CC000000" 
+                CornerRadius="20"
+                Opacity="0">
+            <StackPanel Orientation="Horizontal" Margin="10,5">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                    <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="10"/>
+                    <ComboBox x:Name="cobVideoSource" Width="80" SelectionChanged="cobVideoSource_SelectionChanged" 
+                              VerticalAlignment="Center" FontSize="10"/>
                 </StackPanel>
-            </Border>
-        </Canvas>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                    <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
+                                 VerticalAlignment="Center" />
+                    <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
+                                 VerticalAlignment="Center" />
+                    <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                    <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
