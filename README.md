@@ -1,5 +1,7 @@
 ﻿<img src="./media/CameraThing.png" alt="CameraThing Logo" width="200" align="right" style="border-radius: 50%;"/>
-<h1 align="center">CameraThing</h1>
+
+# CameraThing ![CameraThing Screenshot](https://img.shields.io/badge/Platform-Windows-blue) ![.NET Version](https://img.shields.io/badge/.NET-9.0-purple) ![Licence](https://img.shields.io/badge/license-AGPL--v3-green)
+
 <p align="center">A lightweight camera bubble application for Windows, similar to Loom's camera feature. CameraThing provides a floating, circular camera overlay that stays on top of your screen for video calls, recordings, or presentations.</p>
 <p align="center">
   <a href="#features">Features</a> •
@@ -10,9 +12,6 @@
 
 
 
-![CameraThing Screenshot](https://img.shields.io/badge/Platform-Windows-blue)
-![.NET Version](https://img.shields.io/badge/.NET-9.0-purple)
-![Licence](https://img.shields.io/badge/license-AGPL--v3-green)
 
 ## Features
 
