@@ -5,8 +5,8 @@ param (
     [switch]$OnlyBuild = $false
 )
 
-$appName = "InOculus"
-$projDir = "InOculus"
+$appName = "CameraThing"
+$projDir = "CameraThing"
 
 Set-StrictMode -version 2.0
 $ErrorActionPreference = "Stop"
