@@ -7,8 +7,11 @@ namespace CameraThing;
 public partial class MainWindow : Window
 {
     private readonly ToolbarWindow _toolbarWindow;
+    private bool _isResizeMode;
     private bool _isResizing;
     private bool _isToolbarVisible;
+    private Point _resizeModeStartPoint;
+    private Size _resizeModeStartSize;
 
     public MainWindow()
     {
@@ -50,7 +53,63 @@ public partial class MainWindow : Window
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
-            DragMove();
+        {
+            if (_isResizeMode)
+            {
+                // Exit resize mode on left click
+                _isResizeMode = false;
+                Cursor = Cursors.Arrow;
+            }
+            else
+            {
+                DragMove();
+            }
+        }
+    }
+
+    private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (_isResizeMode)
+        {
+            // Exit resize mode if already in it
+            _isResizeMode = false;
+            Cursor = Cursors.Arrow;
+        }
+        else
+        {
+            // Enter resize mode
+            _isResizeMode = true;
+            _resizeModeStartPoint = e.GetPosition(this);
+            _resizeModeStartSize = new Size(Width, Height);
+            Cursor = Cursors.SizeNWSE;
+        }
+    }
+
+    private void Window_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (!_isResizeMode) return;
+
+        var currentPoint = e.GetPosition(this);
+        var deltaX = currentPoint.X - _resizeModeStartPoint.X;
+        var deltaY = currentPoint.Y - _resizeModeStartPoint.Y;
+
+        // Calculate new size based on the larger delta (to maintain square aspect ratio)
+        var delta = Math.Max(Math.Abs(deltaX), Math.Abs(deltaY));
+
+        // Determine if we're increasing or decreasing size
+        var isIncreasing = deltaX + deltaY > 0;
+        var newSize = isIncreasing ? _resizeModeStartSize.Width + delta : _resizeModeStartSize.Width - delta;
+
+        // Enforce minimum size
+        newSize = Math.Max(newSize, MinWidth);
+
+        _isResizing = true;
+        Width = newSize;
+        Height = newSize;
+        _isResizing = false;
+
+        UpdateWindowClip();
+        UpdateToolbarPosition();
     }
 
     protected override void OnLocationChanged(EventArgs e)
@@ -93,7 +152,7 @@ public partial class MainWindow : Window
 
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if (_isResizing) return;
+        if (_isResizing || _isResizeMode) return;
 
         _isResizing = true;
 

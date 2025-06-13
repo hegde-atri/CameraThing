@@ -8,8 +8,10 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        Topmost="True"
+        Topmost="True" 
         MouseDown="Window_MouseDown"
+        MouseRightButtonDown="Window_MouseRightButtonDown"
+        MouseMove="Window_MouseMove"
         SizeChanged="Window_SizeChanged"
         Loaded="Window_Loaded"
         Title="CameraThing" Height="450" Width="450" MinHeight="200" MinWidth="200">

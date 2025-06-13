@@ -1,8 +1,16 @@
-﻿<img src="./media/CameraThing.png" alt="CameraThing Logo" width="200" align="right" style="border-radius: 50%;"/>
+﻿# 
 
-# CameraThing
+<img src="./media/CameraThing.png" alt="CameraThing Logo" width="200" align="right" style="border-radius: 50%;"/>
+<h1 align="center">CameraThing</h1>
+<p align="center">A lightweight camera bubble application for Windows, similar to Loom's camera feature. CameraThing provides a floating, circular camera overlay that stays on top of your screen for video calls, recordings, or presentations.</p>
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Install</a> •
+  <a href="#usage">Usage</a>
+</p>
 
-A lightweight camera bubble application for Windows, similar to Loom's camera feature. CameraThing provides a floating, circular camera overlay that stays on top of your screen for video calls, recordings, or presentations.
+
+
 
 ![CameraThing Screenshot](https://img.shields.io/badge/Platform-Windows-blue)
 ![.NET Version](https://img.shields.io/badge/.NET-9.0-purple)
@@ -15,20 +23,18 @@ A lightweight camera bubble application for Windows, similar to Loom's camera fe
 
 - 🎥 **Floating Camera Bubble**: Circular camera overlay that stays on top of all windows
 - 🔄 **Draggable Window**: Move the camera bubble anywhere on your screen
-- ⚙️ **Settings Panel**: Configure camera options and appearance
+- ⚙️ **Settings Panel**: Configure camera options (more shapes coming soon)
 - 🎯 **Transparent Background**: Clean, professional look
-- 📐 **Resizable [Coming Soon]**: Adjust the size of the camera bubble to your needs
+- 📐 **Resizable [Coming Soon]**: Adjust the size of the camera bubble to your needs by right clicking on the window.
 - 🖥️ **Windows Integration**: Designed specifically for Windows 10 and 11
 
-## System Requirements
-
-- **Operating System**: Windows 10 or Windows 11 (tested on Windows 11)
-- **Framework**: .NET 9.0 Runtime
-- **Hardware**: Webcam or compatible camera device
+**Star ⭐ this repository if you find it useful!**
 
 ## Installation
 
-You can download it and install it using ClickOnce through [here](https://hegde-atri.github.io/CameraThing/CameraThing.application).
+Only Windows is supported. You can download it and install it using ClickOnce [here](https://hegde-atri.github.io/CameraThing/CameraThing.application).
+
+It will automatically detect and prompt for updates.
 
 
 > [!NOTE]
@@ -50,12 +56,12 @@ dotnet run --project CameraThing
 
 ## Usage
 
-1. **Launch**: Double-click `CameraThing.exe` to start the application
+1. **Launch**: Search for "CameraThing" in your Start menu or run `CameraThing.exe` from the build output directory
 2. **Camera Bubble**: A circular camera overlay will appear on your screen
 3. **Move**: Click and drag the bubble to reposition it anywhere on your screen
-4. **Resize**: Drag the edges to resize the camera bubble
-5. **Settings**: Hover over the bubble to reveal the settings button
-6. **Close**: Right-click the bubble or use the settings panel to exit
+4. **Resize**: Drag whilst holding right-click to resize the camera bubble
+5. **Settings**: Hover over the bubble to reveal the settings button (the three dots). Use this to toggle the settings panel.
+6. **Close**: Use the settings panel to exit
 
 ## Technology Stack
 
@@ -95,18 +101,20 @@ dotnet restore
 
 - [X] Multiple camera source support
 - [X] Fix crash when just closing the camera selector toolbar
+- [X] Auto Update and installer
+- [X] Resizable camera bubble
 - [ ] Custom shapes (square, rounded rectangle)
 - [ ] Virtual background support
 - [ ] Hotkey support
-- [ ] Auto Update and installer
 
-## License
+## Licence
 
 This project is licensed under the AGPL License - see the [LICENCE](LICENCE) file for details.
 
 ## Acknowledgments
 
 - Built with [WPFMediaKit](https://github.com/jerometerry/wpfmediakit) for camera handling.
+- Thanks to [Jan Jones](https://github.com/jjonescz) for his blog post on [ClickOnce Installer](https://janjones.me/posts/clickonce-installer-build-publish-github/).
 - Inspired by Loom's camera bubble feature.
 - Generative AI was used to create the logo.
 
@@ -116,8 +124,4 @@ If you encounter any issues or have questions:
 
 1. Check the [Issues](https://github.com/hegde-atri/CameraThing/issues) page
 2. Create a new issue with detailed information about your problem
-3. Include your Windows version and camera details
-
----
-
-**Star ⭐ this repository if you find it useful!**
+3. Include your Windows version, camera details, and steps to reproduce the issue
