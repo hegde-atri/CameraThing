@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using WPFMediaKit.DirectShow.Controls;
 
 namespace CameraThing;
@@ -31,5 +32,11 @@ namespace CameraThing;
                 return;
             SetCameraCaptureElementVisible(true);
             cameraCaptureElement.VideoCaptureDevice = MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex];
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                DragMove();
         }
     }
