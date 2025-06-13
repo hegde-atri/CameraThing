@@ -2,44 +2,36 @@ using System.Windows;
 using System.Windows.Controls;
 using WPFMediaKit.DirectShow.Controls;
 
-namespace CameraThing
+namespace CameraThing;
+
+public partial class ToolbarWindow : Window
 {
-    public partial class ToolbarWindow : Window
+    private readonly MainWindow _mainWindow;
+
+    public ToolbarWindow(MainWindow mainWindow)
     {
-        private MainWindow _mainWindow;
+        InitializeComponent();
+        _mainWindow = mainWindow;
 
-        public ToolbarWindow(MainWindow mainWindow)
+        // Populate camera sources
+        if (MultimediaUtil.VideoInputDevices.Length > 0)
         {
-            InitializeComponent();
-            _mainWindow = mainWindow;
-            
-            // Populate camera sources
-            if (MultimediaUtil.VideoInputDevices.Length > 0)
-            {
-                cobVideoSource.ItemsSource = MultimediaUtil.VideoInputNames;
-            }
-        }        private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cobVideoSource.SelectedIndex < 0)
-            {
-                // Stop any current camera capture
-                _mainWindow.SetCameraDevice(null);
-                return;
-            }
-
-            // Set the selected camera device
+            cobVideoSource.ItemsSource = MultimediaUtil.VideoInputNames;
+            cobVideoSource.SelectedIndex = 0;
             _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex]);
         }
+    }
 
-        public void UpdateDeeperColorBinding()
+    private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (cobVideoSource.SelectedIndex < 0)
         {
-            // Update the deeper color binding from main window
-            chkDeeperColor.IsChecked = _mainWindow.GetDeeperColorValue();
+            // Stop any current camera capture
+            _mainWindow.SetCameraDevice(null);
+            return;
         }
 
-        private void chkDeeperColor_CheckedChanged(object sender, RoutedEventArgs e)
-        {
-            _mainWindow.SetDeeperColorValue(chkDeeperColor.IsChecked == true);
-        }
+        // Set the selected camera device
+        _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex]);
     }
 }

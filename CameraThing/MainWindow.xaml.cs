@@ -1,27 +1,29 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DirectShowLib;
 using WPFMediaKit.DirectShow.Controls;
 
 namespace CameraThing;
 
 public partial class MainWindow : Window
 {
-    private bool isResizing;
-    private ToolbarWindow _toolbarWindow;
-    private bool _isToolbarVisible = false;    public MainWindow()
+    private readonly ToolbarWindow _toolbarWindow;
+    private bool _isToolbarVisible;
+    private bool _isResizing;
+
+    public MainWindow()
     {
         InitializeComponent();
 
-        // Initialize toolbar window
+        // Initialise toolbar window
         _toolbarWindow = new ToolbarWindow(this);
 
-        if (MultimediaUtil.VideoInputDevices.Length > 0)
-        {
-            // Set initial camera device
-            cameraCaptureElement.VideoCaptureDevice = MultimediaUtil.VideoInputDevices[0];
-        }
-        
+        // if (MultimediaUtil.VideoInputDevices.Length > 0)
+        //     // Set initial camera device
+        //     CameraCaptureElement.VideoCaptureDevice = MultimediaUtil.VideoInputDevices[0];
+            
+
         // Set initial size to be square
         UpdateWindowClip();
     }
@@ -29,30 +31,21 @@ public partial class MainWindow : Window
     protected override void OnClosed(EventArgs e)
     {
         // Hide and close the toolbar window when main window closes
-        if (_toolbarWindow != null)
-        {
-            _toolbarWindow.Close();
-        }
+        if (_toolbarWindow != null) _toolbarWindow.Close();
         base.OnClosed(e);
-    }private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    }
+
+    private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // This method is no longer needed as it's handled in ToolbarWindow
-    }    public void SetCameraDevice(DirectShowLib.DsDevice? device)
-    {
-        cameraCaptureElement.VideoCaptureDevice = device;
     }
 
-    public bool GetDeeperColorValue()
+    public void SetCameraDevice(DsDevice? device)
     {
-        // Return the deeper color value - you may need to adjust this based on your implementation
-        return false; // placeholder
+        CameraCaptureElement.VideoCaptureDevice = device;
     }
 
-    public void SetDeeperColorValue(bool value)
-    {
-        // Set the deeper color value - you may need to adjust this based on your implementation
-        // This should update the cameraCaptureElement.DeeperColor property
-    }    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
             DragMove();
@@ -66,14 +59,16 @@ public partial class MainWindow : Window
 
     private void UpdateToolbarPosition()
     {
-        if (_isToolbarVisible && _toolbarWindow != null)
+        if (_isToolbarVisible)
         {
             // Position toolbar above the main window
             var mainWindowRect = new Rect(Left, Top, Width, Height);
             _toolbarWindow.Left = mainWindowRect.Left + (mainWindowRect.Width - _toolbarWindow.Width) / 2;
             _toolbarWindow.Top = mainWindowRect.Top - _toolbarWindow.Height - 10;
         }
-    }    private void SettingsButton_Click(object sender, RoutedEventArgs e)
+    }
+
+    private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
         if (_isToolbarVisible)
         {
@@ -92,11 +87,13 @@ public partial class MainWindow : Window
     {
         // Initialize window clip after loading
         UpdateWindowClip();
-    }    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        if (isResizing) return;
+    }
 
-        isResizing = true;
+    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        if (_isResizing) return;
+
+        _isResizing = true;
 
         // Force square aspect ratio
         var size = Math.Min(Width, Height);
@@ -106,7 +103,7 @@ public partial class MainWindow : Window
         UpdateWindowClip();
         UpdateToolbarPosition();
 
-        isResizing = false;
+        _isResizing = false;
     }
 
     private void UpdateWindowClip()

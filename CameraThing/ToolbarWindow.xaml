@@ -33,8 +33,7 @@
                 <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="2" />
                 <RadioButton Content=""
                              IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
-                             VerticalAlignment="Center" />                <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="2" />
-                <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" Checked="chkDeeperColor_CheckedChanged" Unchecked="chkDeeperColor_CheckedChanged" />
+                             VerticalAlignment="Center" />
             </StackPanel>
         </StackPanel>
     </Border>
