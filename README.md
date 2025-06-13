@@ -30,7 +30,10 @@ A lightweight camera bubble application for Windows, similar to Loom's camera fe
 
 1. Go to the [latest release](https://github.com/hegde-atri/CameraThing/releases/latest)
 2. Download the `CameraThing.exe` file from the release assets
-3. Run the executable - no installation required!
+3. Run the executable - no installation required.
+
+> [!NOTE]
+> You might need to install .NET 9.0 Desktop Runtime which you can install here - https://dotnet.microsoft.com/en-us/download/dotnet/9.0. 
 
 ### Option 2: Build from Source
 
