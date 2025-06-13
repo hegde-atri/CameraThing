@@ -29,7 +29,16 @@ public partial class MainWindow : Window
     protected override void OnClosed(EventArgs e)
     {
         // Hide and close the toolbar window when main window closes
-        if (_toolbarWindow != null) _toolbarWindow.Close();
+        if (_toolbarWindow != null)
+            try
+            {
+                _toolbarWindow.Close();
+            }
+            catch
+            {
+                // Ignore exceptions if toolbar is already closing/closed
+            }
+
         base.OnClosed(e);
     }
 

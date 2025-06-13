@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using WPFMediaKit.DirectShow.Controls;
@@ -12,6 +13,9 @@ public partial class ToolbarWindow : Window
     {
         InitializeComponent();
         _mainWindow = mainWindow;
+
+        // Handle window closing to shut down the entire application
+        Closing += ToolbarWindow_Closing;
 
         // Populate camera sources
         if (MultimediaUtil.VideoInputDevices.Length > 0)
@@ -39,5 +43,11 @@ public partial class ToolbarWindow : Window
     {
         // Close the application by closing the main window
         _mainWindow.Close();
+    }
+
+    private void ToolbarWindow_Closing(object sender, CancelEventArgs e)
+    {
+        // When toolbar window is closing (by any means), shut down the entire application
+        Application.Current.Shutdown();
     }
 }

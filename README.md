@@ -54,7 +54,7 @@ dotnet run --project CameraThing
 
 ## Technology Stack
 
-- **Framework**: WPF (Windows Presentation Foundation)
+- **Framework**: WPF
 - **Media Handling**: WPFMediaKit for camera integration
 - **Target Platform**: .NET 9.0 on Windows
 
@@ -85,11 +85,11 @@ dotnet restore
 ## Known Issues
 
 - Currently tested primarily on Windows 11
-- Some camera drivers may require additional configuration
 
 ## Roadmap
 
 - [X] Multiple camera source support
+- [X] Fix crash when just closing the camera selector toolbar
 - [ ] Custom shapes (square, rounded rectangle)
 - [ ] Virtual background support
 - [ ] Hotkey support
