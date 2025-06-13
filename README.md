@@ -1,4 +1,6 @@
-﻿# CameraThing
+﻿<img src="./media/CameraThing.png" alt="CameraThing Logo" width="200" align="right" style="border-radius: 50%;"/>
+
+# CameraThing
 
 A lightweight camera bubble application for Windows, similar to Loom's camera feature. CameraThing provides a floating, circular camera overlay that stays on top of your screen for video calls, recordings, or presentations.
 
@@ -26,14 +28,11 @@ A lightweight camera bubble application for Windows, similar to Loom's camera fe
 
 ## Installation
 
-### Option 1: Download Pre-built Release (Recommended)
+You can download it and install it using ClickOnce through [here](https://hegde-atri.github.io/CameraThing/CameraThing.application).
 
-1. Go to the [latest release](https://github.com/hegde-atri/CameraThing/releases/latest)
-2. Download the `CameraThing.exe` file from the release assets
-3. Run the executable - no installation required.
 
 > [!NOTE]
-> You might need to install .NET 9.0 Desktop Runtime which you can install here - https://dotnet.microsoft.com/en-us/download/dotnet/9.0. 
+> You will also need to install .NET 9.0 Desktop Runtime which you can install here - https://dotnet.microsoft.com/en-us/download/dotnet/9.0. 
 
 ### Option 2: Build from Source
 
@@ -107,8 +106,9 @@ This project is licensed under the AGPL License - see the [LICENCE](LICENCE) fil
 
 ## Acknowledgments
 
-- Built with [WPFMediaKit](https://github.com/jerometerry/wpfmediakit) for camera handling
-- Inspired by Loom's camera bubble feature
+- Built with [WPFMediaKit](https://github.com/jerometerry/wpfmediakit) for camera handling.
+- Inspired by Loom's camera bubble feature.
+- Generative AI was used to create the logo.
 
 ## Support
 
