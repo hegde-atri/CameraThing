@@ -48,7 +48,6 @@
             <Grid.Clip>
                 <EllipseGeometry x:Name="CameraClip" Center="225,225" RadiusX="225" RadiusY="225" />
             </Grid.Clip>
-
             <controls:VideoCaptureElement x:Name="CameraCaptureElement"
                                           EnableSampleGrabbing="False"
                                           Stretch="UniformToFill"

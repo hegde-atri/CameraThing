@@ -34,4 +34,10 @@ public partial class ToolbarWindow : Window
         // Set the selected camera device
         _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex]);
     }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Close the application by closing the main window
+        _mainWindow.Close();
+    }
 }

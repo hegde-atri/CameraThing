@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CameraThing"
-        xmlns:players="clr-namespace:WPFMediaKit.DirectShow.MediaPlayers;assembly=WPFMediaKit"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -14,7 +13,6 @@
         SizeToContent="WidthAndHeight"
         Title="ToolbarWindow">
     <Window.Resources>
-        <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
     </Window.Resources>
     <Border Background="#CC000000"
             CornerRadius="10"
@@ -26,14 +24,41 @@
                           VerticalAlignment="Center" FontSize="11" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="2" />
-                <RadioButton Content=""
-                             IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
-                             VerticalAlignment="Center" />
-                <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="2" />
-                <RadioButton Content=""
-                             IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
-                             VerticalAlignment="Center" />
+                <Button x:Name="CloseButton"
+                        Content="✕"
+                        Width="20"
+                        Height="20"
+                        FontSize="10"
+                        FontWeight="Bold"
+                        Background="#CCCC0000"
+                        Foreground="White"
+                        BorderBrush="Transparent"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Click="CloseButton_Click"
+                        ToolTip="Close Application">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                CornerRadius="10"
+                                                BorderThickness="0">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#CCFF0000" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
         </StackPanel>
     </Border>

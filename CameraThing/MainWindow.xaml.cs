@@ -1,16 +1,14 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using DirectShowLib;
-using WPFMediaKit.DirectShow.Controls;
 
 namespace CameraThing;
 
 public partial class MainWindow : Window
 {
     private readonly ToolbarWindow _toolbarWindow;
-    private bool _isToolbarVisible;
     private bool _isResizing;
+    private bool _isToolbarVisible;
 
     public MainWindow()
     {
@@ -22,7 +20,7 @@ public partial class MainWindow : Window
         // if (MultimediaUtil.VideoInputDevices.Length > 0)
         //     // Set initial camera device
         //     CameraCaptureElement.VideoCaptureDevice = MultimediaUtil.VideoInputDevices[0];
-            
+
 
         // Set initial size to be square
         UpdateWindowClip();
