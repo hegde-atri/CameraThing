@@ -24,7 +24,17 @@ public partial class MainWindow : Window
         
         // Set initial size to be square
         UpdateWindowClip();
-    }    private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        // Hide and close the toolbar window when main window closes
+        if (_toolbarWindow != null)
+        {
+            _toolbarWindow.Close();
+        }
+        base.OnClosed(e);
+    }private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // This method is no longer needed as it's handled in ToolbarWindow
     }    public void SetCameraDevice(DirectShowLib.DsDevice? device)
@@ -48,7 +58,22 @@ public partial class MainWindow : Window
             DragMove();
     }
 
-    private void SettingsButton_Click(object sender, RoutedEventArgs e)
+    protected override void OnLocationChanged(EventArgs e)
+    {
+        base.OnLocationChanged(e);
+        UpdateToolbarPosition();
+    }
+
+    private void UpdateToolbarPosition()
+    {
+        if (_isToolbarVisible && _toolbarWindow != null)
+        {
+            // Position toolbar above the main window
+            var mainWindowRect = new Rect(Left, Top, Width, Height);
+            _toolbarWindow.Left = mainWindowRect.Left + (mainWindowRect.Width - _toolbarWindow.Width) / 2;
+            _toolbarWindow.Top = mainWindowRect.Top - _toolbarWindow.Height - 10;
+        }
+    }    private void SettingsButton_Click(object sender, RoutedEventArgs e)
     {
         if (_isToolbarVisible)
         {
@@ -57,13 +82,9 @@ public partial class MainWindow : Window
         }
         else
         {
-            // Position toolbar above the main window
-            var mainWindowRect = new Rect(Left, Top, Width, Height);
-            _toolbarWindow.Left = mainWindowRect.Left + (mainWindowRect.Width - _toolbarWindow.Width) / 2;
-            _toolbarWindow.Top = mainWindowRect.Top - _toolbarWindow.Height - 10;
-            
             _toolbarWindow.Show();
             _isToolbarVisible = true;
+            UpdateToolbarPosition();
         }
     }
 
@@ -71,9 +92,7 @@ public partial class MainWindow : Window
     {
         // Initialize window clip after loading
         UpdateWindowClip();
-    }
-
-    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+    }    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         if (isResizing) return;
 
@@ -85,6 +104,7 @@ public partial class MainWindow : Window
         Height = size;
 
         UpdateWindowClip();
+        UpdateToolbarPosition();
 
         isResizing = false;
     }
