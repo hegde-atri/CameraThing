@@ -4,7 +4,7 @@ A lightweight camera bubble application for Windows, similar to Loom's camera fe
 
 ![CameraThing Screenshot](https://img.shields.io/badge/Platform-Windows-blue)
 ![.NET Version](https://img.shields.io/badge/.NET-9.0-purple)
-![License](https://img.shields.io/badge/License-MIT-green)
+![Licence](https://img.shields.io/badge/license-AGPL--v3-green)
 
 ## Features
 
@@ -97,7 +97,7 @@ dotnet restore
 
 ## License
 
-This project is licensed under the AGPL License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the AGPL License - see the [LICENCE](LICENCE) file for details.
 
 ## Acknowledgments
 

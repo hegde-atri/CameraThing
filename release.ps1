@@ -23,7 +23,7 @@ Write-Output "MSBuild: $((Get-Command $msBuildPath).Path)"
 $tag = $(git describe --tags 2>$null)
 if (-not $tag) {
     Write-Output "No tags found, using default version"
-    $tag = "v1.0.0"
+    $tag = "v0.0.1"
 }
 Write-Output "Tag: $tag"
 
