@@ -97,6 +97,9 @@ try {
         Remove-Item -Path "$appName.application"
     }
 
+    $appFilesPath = "../$outDir/Application Files"
+    $applicationPath = "../$outDir/$appName.application"
+
     if (Test-Path $appFilesPath) {
         Write-Output "  Found: Application Files directory"
     } else {
