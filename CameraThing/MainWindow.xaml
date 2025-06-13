@@ -51,7 +51,6 @@
 
             <controls:VideoCaptureElement x:Name="CameraCaptureElement"
                                           EnableSampleGrabbing="False"
-                                          DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
                                           Stretch="UniformToFill"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center" />

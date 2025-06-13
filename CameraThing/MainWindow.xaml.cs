@@ -35,11 +35,6 @@ public partial class MainWindow : Window
         base.OnClosed(e);
     }
 
-    private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        // This method is no longer needed as it's handled in ToolbarWindow
-    }
-
     public void SetCameraDevice(DsDevice? device)
     {
         CameraCaptureElement.VideoCaptureDevice = device;

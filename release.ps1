@@ -13,12 +13,6 @@ $ErrorActionPreference = "Stop"
 
 Write-Output "Working directory: $pwd"
 
-# Find MSBuild.
-$msBuildPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
-    -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe `
-    -prerelease | select-object -first 1
-Write-Output "MSBuild: $((Get-Command $msBuildPath).Path)"
-
 # Load current Git tag.
 $tag = $(git describe --tags 2>$null)
 if (-not $tag) {
@@ -45,19 +39,22 @@ try {
     Write-Output "Restoring:"
     dotnet restore -r win-x64
     Write-Output "Publishing:"
-    $msBuildVerbosityArg = "/v:m"
-    if ($env:CI) {
-        $msBuildVerbosityArg = ""
-    }
-    & $msBuildPath /target:publish /p:PublishProfile=ClickOnceProfile `
-        /p:ApplicationVersion=$version /p:Configuration=Release `
-        /p:PublishDir=$publishDir /p:PublishUrl=$publishDir `
-        $msBuildVerbosityArg
+    
+    # Use dotnet publish instead of MSBuild for better .NET compatibility
+    dotnet publish -c Release -r win-x64 --self-contained false `
+        -p:PublishProfile=ClickOnceProfile `
+        -p:ApplicationVersion=$version `
+        -p:PublishDir=$publishDir `
+        -p:PublishUrl=$publishDir
 
-    # Measure publish size.
-    $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
-        Measure-Object -Property Length -Sum).Sum / 1Mb
-    Write-Output ("Published size: {0:N2} MB" -f $publishSize)
+    # Measure publish size (with error handling).
+    if (Test-Path "$publishDir/Application Files") {
+        $publishSize = (Get-ChildItem -Path "$publishDir/Application Files" -Recurse |
+            Measure-Object -Property Length -Sum).Sum / 1Mb
+        Write-Output ("Published size: {0:N2} MB" -f $publishSize)
+    } else {
+        Write-Output "Warning: Application Files directory not found"
+    }
 }
 finally {
     Pop-Location
