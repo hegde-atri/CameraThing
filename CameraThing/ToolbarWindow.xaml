@@ -127,13 +127,12 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-
-        <!-- ComboBoxItem Style for dark theme -->
+        </Style>        <!-- ComboBoxItem Style for dark theme -->
         <Style TargetType="ComboBoxItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="#FFFFFF" />
             <Setter Property="Padding" Value="8,4" />
+            <Setter Property="ToolTip" Value="{Binding ToolTip}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBoxItem">
@@ -161,7 +160,7 @@
         <StackPanel Orientation="Horizontal" Margin="15,10">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
                 <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="11" />
-                <ComboBox x:Name="cobVideoSource" Width="100" SelectionChanged="cobVideoSource_SelectionChanged"
+                <ComboBox x:Name="cobVideoSource" Width="160" SelectionChanged="cobVideoSource_SelectionChanged"
                           VerticalAlignment="Center" FontSize="11" Style="{StaticResource ModernDarkComboBox}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">

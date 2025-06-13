@@ -12,15 +12,20 @@ public partial class ToolbarWindow : Window
     public ToolbarWindow(MainWindow mainWindow)
     {
         InitializeComponent();
-        _mainWindow = mainWindow;
-
-        // Handle window closing to shut down the entire application
-        Closing += ToolbarWindow_Closing;
-
-        // Populate camera sources
+        _mainWindow = mainWindow; // Handle window closing to shut down the entire application
+        Closing += ToolbarWindow_Closing; // Populate camera sources
         if (MultimediaUtil.VideoInputDevices.Length > 0)
         {
-            cobVideoSource.ItemsSource = MultimediaUtil.VideoInputNames;
+            // Create camera display items with tooltips for full names
+            var cameraItems = MultimediaUtil.VideoInputNames.Select(name => new
+            {
+                DisplayName = TrimCameraName(name),
+                FullName = name,
+                ToolTip = name.Length > 30 ? name : null
+            }).ToArray();
+
+            cobVideoSource.ItemsSource = cameraItems;
+            cobVideoSource.DisplayMemberPath = "DisplayName";
             cobVideoSource.SelectedIndex = 0;
             _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex]);
         }
@@ -49,5 +54,17 @@ public partial class ToolbarWindow : Window
     {
         // When toolbar window is closing (by any means), shut down the entire application
         Application.Current.Shutdown();
+    }
+
+    private static string TrimCameraName(string cameraName)
+    {
+        if (string.IsNullOrEmpty(cameraName))
+            return cameraName;
+
+        const int maxLength = 30;
+        if (cameraName.Length <= maxLength)
+            return cameraName;
+
+        return cameraName.Substring(0, maxLength - 3) + "...";
     }
 }

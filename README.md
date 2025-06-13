@@ -8,11 +8,14 @@ A lightweight camera bubble application for Windows, similar to Loom's camera fe
 
 ## Features
 
+![Preview 1](./media/preview1.png)
+![Preview 2](./media/preview2.png)
+
 - 🎥 **Floating Camera Bubble**: Circular camera overlay that stays on top of all windows
 - 🔄 **Draggable Window**: Move the camera bubble anywhere on your screen
 - ⚙️ **Settings Panel**: Configure camera options and appearance
 - 🎯 **Transparent Background**: Clean, professional look
-- 📐 **Resizable**: Adjust the size of the camera bubble to your needs
+- 📐 **Resizable [Coming Soon]**: Adjust the size of the camera bubble to your needs
 - 🖥️ **Windows Integration**: Designed specifically for Windows 10 and 11
 
 ## System Requirements
