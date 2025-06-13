@@ -160,7 +160,7 @@
         <StackPanel Orientation="Horizontal" Margin="15,10">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
                 <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="11" />
-                <ComboBox x:Name="cobVideoSource" Width="160" SelectionChanged="cobVideoSource_SelectionChanged"
+                <ComboBox x:Name="CobVideoSource" Width="160" SelectionChanged="cobVideoSource_SelectionChanged"
                           VerticalAlignment="Center" FontSize="11" Style="{StaticResource ModernDarkComboBox}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">

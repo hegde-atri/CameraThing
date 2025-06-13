@@ -24,16 +24,16 @@ public partial class ToolbarWindow : Window
                 ToolTip = name.Length > 30 ? name : null
             }).ToArray();
 
-            cobVideoSource.ItemsSource = cameraItems;
-            cobVideoSource.DisplayMemberPath = "DisplayName";
-            cobVideoSource.SelectedIndex = 0;
-            _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex]);
+            CobVideoSource.ItemsSource = cameraItems;
+            CobVideoSource.DisplayMemberPath = "DisplayName";
+            CobVideoSource.SelectedIndex = 0;
+            _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[CobVideoSource.SelectedIndex]);
         }
     }
 
     private void cobVideoSource_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (cobVideoSource.SelectedIndex < 0)
+        if (CobVideoSource.SelectedIndex < 0)
         {
             // Stop any current camera capture
             _mainWindow.SetCameraDevice(null);
@@ -41,7 +41,7 @@ public partial class ToolbarWindow : Window
         }
 
         // Set the selected camera device
-        _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[cobVideoSource.SelectedIndex]);
+        _mainWindow.SetCameraDevice(MultimediaUtil.VideoInputDevices[CobVideoSource.SelectedIndex]);
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
