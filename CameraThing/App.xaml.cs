@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace CameraThingWPF;
+namespace CameraThing;
 
 /// <summary>
 /// Interaction logic for App.xaml
