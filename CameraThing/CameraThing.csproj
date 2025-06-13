@@ -9,7 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="WPFMediaKit" Version="3.0.1"/>
+        <PackageReference Include="Microsoft.Net.Sdk.Compilers.Toolset" Version="9.0.301" />
+        <PackageReference Include="WPFMediaKit" Version="3.0.1" />
     </ItemGroup>
 
 </Project>
