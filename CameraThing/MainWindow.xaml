@@ -9,9 +9,10 @@
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"
-        MouseDown="Window_MouseDown"
-        Title="MainWindow" Height="450" Width="450">    <Window.Resources>
+        Background="Transparent"        MouseDown="Window_MouseDown"
+        SizeChanged="Window_SizeChanged"
+        Loaded="Window_Loaded"
+        Title="MainWindow" Height="450" Width="450" MinHeight="200" MinWidth="200"><Window.Resources>
         <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         <Storyboard x:Key="ShowToolbar">
             <DoubleAnimation Storyboard.TargetName="ToolbarPanel" 
@@ -23,9 +24,9 @@
                            Storyboard.TargetProperty="Opacity" 
                            To="0" Duration="0:0:0.2"/>
         </Storyboard>
-    </Window.Resources>    <Grid>
+    </Window.Resources>    <Grid x:Name="MainGrid">
         <Grid.Clip>
-            <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
+            <EllipseGeometry x:Name="WindowClip" Center="225,225" RadiusX="225" RadiusY="225"/>
         </Grid.Clip>
         <Grid.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
@@ -34,53 +35,63 @@
             <EventTrigger RoutedEvent="MouseLeave">
                 <BeginStoryboard Storyboard="{StaticResource HideToolbar}"/>
             </EventTrigger>
-        </Grid.Triggers>        <!-- Black background circle when no camera is active -->
-        <Ellipse Fill="Black" Width="450" Height="450" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid.Triggers>
+
+        <!-- Black background circle when no camera is active -->
+        <Ellipse x:Name="BackgroundEllipse" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         
         <!-- Error text display -->
         <TextBlock x:Name="errorText" TextWrapping="Wrap" Foreground="White" 
                    Margin="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
         
-        <!-- Video content with circular clipping -->
-        <controls:MediaUriElement x:Name="mediaUriElement"
-                                  DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}">
-            <controls:MediaUriElement.Clip>
-                <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
-            </controls:MediaUriElement.Clip>
-        </controls:MediaUriElement>
+        <!-- Video content with circular clipping and proper scaling -->
+        <Viewbox x:Name="MediaViewbox" Stretch="UniformToFill">
+            <controls:MediaUriElement x:Name="mediaUriElement"
+                                      DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
+                                      Width="450" Height="450">
+                <controls:MediaUriElement.Clip>
+                    <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
+                </controls:MediaUriElement.Clip>
+            </controls:MediaUriElement>
+        </Viewbox>
         
-        <controls:VideoCaptureElement x:Name="cameraCaptureElement" EnableSampleGrabbing="False"
-                                      DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}">
-            <controls:VideoCaptureElement.Clip>
-                <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
-            </controls:VideoCaptureElement.Clip>
-        </controls:VideoCaptureElement>
+        <Viewbox x:Name="CameraViewbox" Stretch="UniformToFill">
+            <controls:VideoCaptureElement x:Name="cameraCaptureElement" EnableSampleGrabbing="False"
+                                          DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
+                                          Width="450" Height="450">
+                <controls:VideoCaptureElement.Clip>
+                    <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
+                </controls:VideoCaptureElement.Clip>
+            </controls:VideoCaptureElement>
+        </Viewbox>
 
-        <!-- Floating toolbar -->
-        <Border x:Name="ToolbarPanel" 
-                Background="#CC000000" 
-                CornerRadius="20"
-                Opacity="0"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Top" 
-                Margin="20">
-            <StackPanel Orientation="Horizontal" Margin="10,5">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                    <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="10"/>
-                    <ComboBox x:Name="cobVideoSource" Width="80" SelectionChanged="cobVideoSource_SelectionChanged" 
-                              VerticalAlignment="Center" FontSize="10"/>
+        <!-- Floating toolbar positioned outside the circle -->
+        <Canvas>
+            <Border x:Name="ToolbarPanel" 
+                    Canvas.Left="0"
+                    Canvas.Top="-60"
+                    Background="#CC000000" 
+                    CornerRadius="20"
+                    Opacity="0"
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="10,5">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                        <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="10"/>
+                        <ComboBox x:Name="cobVideoSource" Width="80" SelectionChanged="cobVideoSource_SelectionChanged" 
+                                  VerticalAlignment="Center" FontSize="10"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                        <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                        <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
+                                     VerticalAlignment="Center" />
+                        <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                        <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
+                                     VerticalAlignment="Center" />
+                        <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                        <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" />
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                    <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
-                                 VerticalAlignment="Center" />
-                    <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
-                                 VerticalAlignment="Center" />
-                    <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
-                    <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" />
-                </StackPanel>
-            </StackPanel>
-        </Border>
+            </Border>
+        </Canvas>
     </Grid>
 </Window>
