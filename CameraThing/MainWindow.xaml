@@ -8,44 +8,79 @@
         xmlns:players="clr-namespace:WPFMediaKit.DirectShow.MediaPlayers;assembly=WPFMediaKit"
         mc:Ignorable="d"
         WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
         MouseDown="Window_MouseDown"
-        Title="MainWindow" Height="450" Width="800">
-    <Window.Resources>
+        Title="MainWindow" Height="450" Width="450">    <Window.Resources>
         <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-    </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                <Label Content="Select camera:" VerticalAlignment="Center"/>
-                <ComboBox x:Name="cobVideoSource" Width="100" SelectionChanged="cobVideoSource_SelectionChanged" VerticalAlignment="Center"/>
+        <Storyboard x:Key="ShowToolbar">
+            <DoubleAnimation Storyboard.TargetName="ToolbarPanel" 
+                           Storyboard.TargetProperty="Opacity" 
+                           To="1" Duration="0:0:0.2"/>
+        </Storyboard>
+        <Storyboard x:Key="HideToolbar">
+            <DoubleAnimation Storyboard.TargetName="ToolbarPanel" 
+                           Storyboard.TargetProperty="Opacity" 
+                           To="0" Duration="0:0:0.2"/>
+        </Storyboard>
+    </Window.Resources>    <Grid>
+        <Grid.Clip>
+            <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
+        </Grid.Clip>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard Storyboard="{StaticResource ShowToolbar}"/>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard Storyboard="{StaticResource HideToolbar}"/>
+            </EventTrigger>
+        </Grid.Triggers>        <!-- Black background circle when no camera is active -->
+        <Ellipse Fill="Black" Width="450" Height="450" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        
+        <!-- Error text display -->
+        <TextBlock x:Name="errorText" TextWrapping="Wrap" Foreground="White" 
+                   Margin="4" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        
+        <!-- Video content with circular clipping -->
+        <controls:MediaUriElement x:Name="mediaUriElement"
+                                  DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}">
+            <controls:MediaUriElement.Clip>
+                <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
+            </controls:MediaUriElement.Clip>
+        </controls:MediaUriElement>
+        
+        <controls:VideoCaptureElement x:Name="cameraCaptureElement" EnableSampleGrabbing="False"
+                                      DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}">
+            <controls:VideoCaptureElement.Clip>
+                <EllipseGeometry Center="225,225" RadiusX="225" RadiusY="225"/>
+            </controls:VideoCaptureElement.Clip>
+        </controls:VideoCaptureElement>
+
+        <!-- Floating toolbar -->
+        <Border x:Name="ToolbarPanel" 
+                Background="#CC000000" 
+                CornerRadius="20"
+                Opacity="0"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top" 
+                Margin="20">
+            <StackPanel Orientation="Horizontal" Margin="10,5">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                    <Label Content="Camera:" VerticalAlignment="Center" Foreground="White" FontSize="10"/>
+                    <ComboBox x:Name="cobVideoSource" Width="80" SelectionChanged="cobVideoSource_SelectionChanged" 
+                              VerticalAlignment="Center" FontSize="10"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                    <TextBlock Text="VMR9:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
+                                 VerticalAlignment="Center" />
+                    <TextBlock Text="EVR:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                    <RadioButton Content="" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
+                                 VerticalAlignment="Center" />
+                    <TextBlock Text="Color:" VerticalAlignment="Center" Foreground="White" FontSize="10" Margin="2" />
+                    <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" />
+                </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                <TextBlock Text="Video Renderer:" VerticalAlignment="Center" Margin="4" />
-                <RadioButton Content="VMR9" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.VideoMixingRenderer9}}"
-                             VerticalAlignment="Center" />
-                <RadioButton Content="EVR" IsChecked="{Binding VideoRenderer, ElementName=mediaUriElement, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static players:VideoRendererType.EnhancedVideoRenderer}}"
-                             VerticalAlignment="Center" Margin="4,0" />
-                <TextBlock Text="Deeper Color:" VerticalAlignment="Center" Margin="4" />
-                <CheckBox x:Name="chkDeeperColor" VerticalAlignment="Center" Margin="0,0,4,0" />
-            </StackPanel>
-        </Grid>
-        <TextBlock x:Name="errorText" Grid.Row="1" TextWrapping="Wrap" Foreground="IndianRed" Margin="4" />
-        <controls:MediaUriElement x:Name="mediaUriElement" Grid.Row="1"
-                                  DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
-                                  Margin="4" />
-        <controls:VideoCaptureElement x:Name="cameraCaptureElement" Grid.Row="1" EnableSampleGrabbing="False" Visibility="Collapsed"
-                                      DeeperColor="{Binding IsChecked, ElementName=chkDeeperColor}"
-                                      Margin="4"/>
+        </Border>
     </Grid>
 </Window>
