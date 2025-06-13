@@ -1,6 +1,4 @@
-﻿# 
-
-<img src="./media/CameraThing.png" alt="CameraThing Logo" width="200" align="right" style="border-radius: 50%;"/>
+﻿<img src="./media/CameraThing.png" alt="CameraThing Logo" width="200" align="right" style="border-radius: 50%;"/>
 <h1 align="center">CameraThing</h1>
 <p align="center">A lightweight camera bubble application for Windows, similar to Loom's camera feature. CameraThing provides a floating, circular camera overlay that stays on top of your screen for video calls, recordings, or presentations.</p>
 <p align="center">
